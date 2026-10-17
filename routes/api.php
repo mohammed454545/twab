@@ -6,6 +6,7 @@ use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\UserController;
 
 Route::apiResource('diaries',DiaryController::class);
+Route::get('users/list', [UserController::class, 'list']);
 Route::apiResource('users',UserController::class);
 
 // Route::get('/user', function (Request $request) {

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexUserRequest;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Http\Traits\ApiResponserTrait;
@@ -16,19 +19,41 @@ class UserController extends Controller
         protected UserService $userService
     ) {}
 
-    
-    public function index(Request $request)
+
+    public function index(IndexUserRequest $request)
     {
-        $users = $this->userService->getAllUsers();
+        $filters = $request->validated();
+
+        $users = $this->userService->getAllUsers($filters);
+
+        $message = $users->isEmpty()
+            ? __('users.messages.empty')
+            : __('users.success.listed');
 
         return $this->successResponse(
             (new UserCollection($users))->toArray($request),
             200,
-            __('users.success.listed')
+            $message
         );
     }
 
-    public function show(Request $request, $id)
+    public function list(Request $request)
+    {
+
+        $users = $this->userService->getAllUsersList();
+
+        $message = $users->isEmpty()
+            ? __('users.messages.empty')
+            : __('users.success.listed');
+
+        return $this->successResponse(
+            $users,
+            200,
+            $message
+        );
+    }
+
+    public function show(Request $request, int $id)
     {
         $user = $this->userService->getUserById($id);
 
@@ -39,10 +64,10 @@ class UserController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
         $user = $this->userService->createUser(
-            $request->all()
+            $request->validated()
         );
 
         return $this->successResponse(
@@ -52,11 +77,11 @@ class UserController extends Controller
         );
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, int $id)
     {
         $user = $this->userService->updateUser(
             $id,
-            $request->all()
+            $request->validated()
         );
 
         return $this->successResponse(
@@ -66,7 +91,7 @@ class UserController extends Controller
         );
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $this->userService->deleteUser($id);
 

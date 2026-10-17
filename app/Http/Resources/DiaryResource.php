@@ -16,6 +16,7 @@ class DiaryResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'user'=>$this->user,
             'title' => $this->title,
             'description' => $this->description,
             'rate' => $this->rate,

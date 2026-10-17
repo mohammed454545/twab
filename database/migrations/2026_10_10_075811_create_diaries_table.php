@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('diaries', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->integer('rate')->nullable();

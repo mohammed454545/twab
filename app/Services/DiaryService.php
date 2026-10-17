@@ -1,54 +1,62 @@
 <?php
+
 namespace App\Services;
+
 use App\Models\Diary;
 use Illuminate\Support\Facades\Validator;
 
-
 class DiaryService
 {
-    public function getAllDairies()
+    public function getAllDairies(array $filters = [])
     {
-        return Diary::query()->paginate(15);
+        $query = Diary::with('user:id,name,imageUrl');
+
+
+        $query->when(
+            isset($filters['user_id']),
+            fn($query) => $query->where(
+                'user_id',
+                $filters['user_id']
+            )
+        );
+
+
+        $perPage = $filters['per_page'] ?? 15;
+
+
+        return $query
+            ->latest()
+            ->orderByDesc('id')
+            ->paginate($perPage);
     }
 
-    public function getDiaryById($id)
+    public function getDiaryById(int $id)
     {
-        return Diary::findOrFail($id);
+        return Diary::with('user:id,name,imageUrl')->findOrFail($id);
     }
 
-    public function createDiary ( array $data)
+    public function createDiary(array $data)
     {
-        $validator=Validator::make($data,[
-            'title'=>'nullable|string',
-            'description'=>'nullable|string',
-            'rate'=>'nullable|numeric|min:0|max:10'
-        ]);
-        
-        $validated = $validator->validate();
-        return Diary::create($validated);
-    }
+        $diary = Diary::create($data);
+        $diary->load('user:id,name,imageUrl');
 
-
-    public function updateDiary ($id, array $data)
-    {
-        $diary=Diary::findOrFail($id);
-        $validator=Validator::make($data,[
-            'title'=>'nullable|string',
-            'description'=>'nullable|string',
-            'rate'=>'nullable|numeric|min:0|max:10'
-        ]);
-        
-        $validated = $validator->validate();
-        $diary->update($validated);
         return $diary;
-        
     }
 
-
-    public function deleteDiary($id)
+    public function updateDiary(int $id, array $data)
     {
-        $diary=Diary::findOrFail($id);
+        $diary = Diary::findOrFail($id);
+        $diary->update($data);
+        $diary->load('user:id,name,imageUrl');
+
+        return $diary;
+    }
+
+    public function deleteDiary(int $id)
+    {
+        $diary = Diary::findOrFail($id);
+
         $diary->delete();
-        return true;
+
     }
 }
