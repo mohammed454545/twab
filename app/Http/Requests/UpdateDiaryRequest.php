@@ -24,10 +24,10 @@ class UpdateDiaryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'nullable|string',
-            'user_id' => 'sometimes|required|integer|exists:users,id',
-            'description' => 'nullable|string',
-            'rate' => 'nullable|numeric|min:0|max:10',
+            'title' => 'sometimes|nullable|string',
+            'user_id' => 'prohibited',
+            'description' => 'sometimes|nullable|string',
+            'rate' => 'sometimes|nullable|numeric|min:0|max:10',
         ];
     }
 }

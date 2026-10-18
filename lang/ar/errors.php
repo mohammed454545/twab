@@ -14,4 +14,8 @@ return [
     'service_unavailable' => 'الخدمة غير متاحة حاليًا. يرجى المحاولة لاحقًا.',
     'internal_server_error' => 'حدث خطأ داخلي في الخادم.',
     'request_failed' => 'تعذر إكمال الطلب.',
+    'token_expired' => 'انتهت صلاحية التوكن، يرجى تجديده.',
+    'token_invalid' => 'التوكن غير صالح.',
+    'token_blacklisted' => 'تم إبطال التوكن، يرجى تسجيل الدخول مجددًا.',
+    'token_authentication_failed' => 'تعذرت المصادقة باستخدام التوكن.',
 ];

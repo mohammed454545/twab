@@ -14,4 +14,8 @@ return [
     'service_unavailable' => 'The service is currently unavailable. Please try again later.',
     'internal_server_error' => 'An internal server error occurred.',
     'request_failed' => 'The request could not be completed.',
+    'token_expired' => 'The token has expired. Please refresh it.',
+    'token_invalid' => 'The provided token is invalid.',
+    'token_blacklisted' => 'The token has been revoked. Please log in again.',
+    'token_authentication_failed' => 'Token authentication failed.',
 ];

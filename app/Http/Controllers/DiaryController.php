@@ -53,7 +53,8 @@ class DiaryController extends Controller
     public function store(StoreDiaryRequest $request)
     {
         $diary = $this->diaryService->createDiary(
-            $request->validated()
+            $request->validated(),
+            (int) $request->user('api')->getAuthIdentifier()
         );
 
         return $this->successResponse(

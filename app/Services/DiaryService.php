@@ -35,9 +35,9 @@ class DiaryService
         return Diary::with('user:id,name,imageUrl')->findOrFail($id);
     }
 
-    public function createDiary(array $data)
+    public function createDiary(array $data , int $userId)
     {
-        $diary = Diary::create($data);
+        $diary = Diary::create([...$data,'user_id' => $userId,]);
         $diary->load('user:id,name,imageUrl');
 
         return $diary;

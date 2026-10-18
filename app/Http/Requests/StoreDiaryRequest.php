@@ -25,9 +25,9 @@ class StoreDiaryRequest extends FormRequest
     {
         return [
             'title' => 'nullable|string',
-            'user_id' => 'required|integer|exists:users,id',
             'description' => 'nullable|string',
             'rate' => 'nullable|numeric|min:0|max:10',
+            'user_id' => 'prohibited'
         ];
     }
 }
